@@ -24,6 +24,7 @@
 \textbf{Name} & Dave Galea \\ \hline
 \textbf{VUT ID} & 284844 \\ \hline
 \textbf{Lab Number} & 1 \\ \hline
+\textbf{Date} & October 2025 \\ \hline
 \end{tabular}
 \end{center}
 
@@ -42,10 +43,10 @@ The aim of this task was to examine the ARP table on the local computer.
 To view the ARP table, the command \texttt{arp -a} was used. Upon execution, this was the result:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{objective 1p1.png}
+\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab1/objective 1p1.png}
 \caption{ARP table of the local computer.}
 \end{figure}
-Ethernet Adapter Public, identified through execution of the ipconfig command, is identified by IP 192.168.37.123. (The fourth interface). 
+Ethernet Adapter Public, identified through execution of the ipconfig command, is identified by IP 192.168.37.123 (the fourth interface). 
 The presence of the dynamic record in the table is indicative that the computer has communicated with the router.
 
 The static record with \textit{ff-ff-ff-ff-ff-ff} is used as a broadcast MAC address; it is used to send data to all devices on a local network.
@@ -63,13 +64,13 @@ The aim of this task was to capture and analyze the ARP communication between tw
 First, \texttt{ipconfig /all} was executed to give detailed information about the network configuration of the local devices.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{objective 2p1.png}
+\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab1/objective 2p1.png}
 \caption{Output of ipconfig /all (first part).}
 \end{figure}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{objective 2p2.png}
+\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab1/objective 2p2.png}
 \caption{Output of ipconfig /all (continued).}
 \end{figure}
 
@@ -80,21 +81,21 @@ The Ethernet interface of interest had the following:\\
 Then, in Wireshark, the arp filter was applied.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{arp protocol applied.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/arp protocol applied.png}
 \caption{Wireshark output after applying the arp protocol filter.}
 \end{figure}
 
 Then, one of two people generated an ARP request to obtain the MAC address of the other by using ping.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{ping cmd.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/ping cmd.png}
 \caption{Ping generated from the command line.}
 \end{figure}
 
 The result in Wireshark:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{pinged.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/pinged.png}
 \caption{The result of the ping displayed in Wireshark.}
 \end{figure}
 
@@ -106,7 +107,7 @@ In the next section, both the ARP request packet and ARP response packet were ex
 Upon selecting the request packet details pane and expanding Ethernet II and Address Resolution Protocol:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{ethernet 2 and other thing ss .png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/ethernet 2 and other thing ss .png}
 \caption{Request packet details.}
 \end{figure}
 One can note that the Target MAC address, the address of who the data is intended for, is \texttt{00:00:00:00:00:00}; this is because it is still unknown; it will be known after the ARP response.
@@ -117,7 +118,7 @@ The Destination MAC address, the address of where the frame is physically meant 
 Upon selecting the response packet details pane and expanding Ethernet II and Address Resolution Protocol:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{response packet answer ss.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/response packet answer ss.png}
 \caption{Response packet details.}
 \end{figure}
 
@@ -132,7 +133,7 @@ The aim of this task was to add the IP and MAC address of a colleague to the ARP
 The contents of the ARP table were re-displayed.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{obj3 arp table .png}
+\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab1/obj3 arp table .png}
 \caption{Output of the redisplayed ARP table after previous actions.}
 \end{figure}
 
@@ -146,7 +147,7 @@ was present in the table as a \textbf{dynamic} record.
 Then, after removing the record using \texttt{arp -d <IP>}, the ARP table printed as follows:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight,  keepaspectratio]{arp-a after deletion obj3.png}
+\includegraphics[width=\linewidth, height=0.55\textheight,  keepaspectratio]{Pictures_Lab1/arp-a after deletion obj3.png}
 \caption{The ARP table after deleting the record.}
 \end{figure}
 
@@ -159,7 +160,7 @@ The \texttt{ping} command was then used to test the availability of my colleague
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.16\textheight, keepaspectratio]{ping cmd.png}
+\includegraphics[width=\linewidth, height=0.16\textheight, keepaspectratio]{Pictures_Lab1/ping cmd.png}
 \caption{The ping command executed in the command line.}
 \end{figure}
 
@@ -167,7 +168,7 @@ After pinging, Wireshark was tested to see if any new ARP packets were captured.
 However, in our case, new packets were still captured as shown below. 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{new arp generated anyway objective 3 .png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/new arp generated anyway objective 3 .png}
 \caption{Output in Wireshark after pinging.}
 \end{figure}
 
@@ -186,7 +187,7 @@ In Wireshark, captured packets can be displayed in a graph. After setting the fi
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, keepaspectratio]{graph zoomed in.png}
+\includegraphics[width=\linewidth, keepaspectratio]{Pictures_Lab1/graph zoomed in.png}
 \caption{Graph of Bytes captured over time.}
 \end{figure}
 
@@ -195,7 +196,7 @@ It can be noted that many peaks are at 102 bytes; these represent the ARP reques
 The graph can also be altered to display packets instead of bytes:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{packets graph obj 4.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/packets graph obj 4.png}
 \caption{Graph of packets captured over time.}
 \end{figure}
 As confirmed by the bytes and the packets graphs, 2 packets are transferred per ARP communication.
@@ -213,7 +214,7 @@ The aim of this task was to create a topology in Cisco Packet Tracer.
 To create the topology, the switch 2960 was connected via Copper Straight-Through cable to 4 PCs. The Fast Ethernet ports were used for connection.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{objective 5.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/objective 5.png}
 \caption{Topology created in Cisco Packet Tracer.}
 \end{figure}
 
@@ -247,21 +248,21 @@ Before generating an ARP communication between PC0 and PC2, their respective ARP
 From PC0, a ping was generated via \texttt{192.168.1.3}. This triggered a new event in the Event List, as shown below. 
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{Event List obj 6 .png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/Event List obj 6 .png}
 \caption{A new event displayed in the Event List.}
 \end{figure}
 
 Upon clicking this event, the OSI model is displayed, and it can be noted that only the lowest 2 layers contain data.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{OSI obj 6 .png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/OSI obj 6 .png}
 \caption{The OSI model displayed upon clicking the event.}
 \end{figure}
 
 Additionally, Outbound PDU details can be generated, as shown below.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Outbound PDU details obj 6 .png}
+\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab1/Outbound PDU details obj 6 .png}
 \caption{The Outbound PDU details.}
 \end{figure}
 Important Details such as the source and target IP and MAC addresses, the destination MAC addresses, and the Opcode value can all be verified through this output.
@@ -269,35 +270,35 @@ Important Details such as the source and target IP and MAC addresses, the destin
 The MAC address table of the switch can be observed through the CLI, using the command \texttt{show mac-address-table} while in \textbf{user mode}. In the lab it is expected that all PCs are already shown here; however, in my case, even after multiple attempts, the table showed empty, and only filled after the following steps.
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.15\textheight, keepaspectratio]{mac address obj6.7.png}
+\includegraphics[width=\linewidth, height=0.15\textheight, keepaspectratio]{Pictures_Lab1/mac address obj6.7.png}
 \caption{MAC address table observed through the CLI of the switch.}
 \end{figure}
 
 After Clicking Capture then forward, the frame arrives at the switch and the MAC table prints as follows:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.15\textheight,keepaspectratio]{mac address obj6.8.png}
+\includegraphics[width=\linewidth, height=0.15\textheight,keepaspectratio]{Pictures_Lab1/mac address obj6.8.png}
 \caption{MAC address table after the frame arrives at the switch.}
 \end{figure}
 
 This is then repeated, and the frame is flooded out all ports except the inbound port. After clicking again, PC2 sends the packet to the switch. PC2's ARP table, at this stage, is as follows:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{arp-a obj 6.10.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/arp-a obj 6.10.png}
 \caption{ARP table of PC2.}
 \end{figure}
 \pagebreak
 The MAC table now has the following entries:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth, height=0.15\textheight,keepaspectratio]{mac address obj6.10.png}
+\includegraphics[width=\linewidth, height=0.15\textheight,keepaspectratio]{Pictures_Lab1/mac address obj6.10.png}
 \caption{MAC address table after PC2 sends the packet to the switch.}
 \end{figure}
 
 And the Inbound PDU details are generated as follows:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{inbound pdu obj6.10.png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/inbound pdu obj6.10.png}
 \caption{Inbound PDU details.}
 \end{figure}
 
@@ -307,7 +308,7 @@ For a final time, Capture then forward is pressed, and the switch sends the pack
 In the Command Prompt of PC0, the ICMP replies were successfully received, and the ARP table at PC0 is printed as follows:
 \begin{figure}[H]
 \centering
-\includegraphics[width=\linewidth,keepaspectratio]{arp -a final .png}
+\includegraphics[width=\linewidth,keepaspectratio]{Pictures_Lab1/arp -a final .png}
 \caption{ARP table at PC0 after the ARP communication is complete.}
 \end{figure}
 
