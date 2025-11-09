@@ -1,0 +1,336 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech,english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{float}
+\geometry{margin=2.5cm}
+
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+	
+	\begin{center}
+		{\Large \textbf{BPA-KOM Lab 2: Comparison of Static and Dynamic Routing}}\\[1em]
+	\end{center}
+	
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Name} & Dave Galea \\ \hline
+			\textbf{VUT ID} & 284844 \\ \hline
+			\textbf{Lab Number} & 2 \\ \hline
+			\textbf{Date} & November 2025 \\ \hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{0.5cm}
+	\hrule
+	\vspace{0.5cm}
+	
+
+\section*{1. Note about my results}
+In this lab, the provided diagram B2 had the following network assignments:
+
+\begin{itemize}
+	\item Network for link R2 $\leftrightarrow$ R4: \texttt{10.4.0.0/16}
+	\item Network for link R4 $\leftrightarrow$ R3: \texttt{10.3.0.0/16}
+\end{itemize}
+
+In my implementation of the lab, the above networks were mistakenly swapped; however all lab objectives were achieved successfully, and the swapped networks did not affect the outcome. 
+
+The networks I worked with for links R2 $\leftrightarrow$ R4 and R4 $\leftrightarrow$ R3:
+
+\begin{itemize}
+	\item Network for link R2 $\leftrightarrow$ R4: \texttt{10.3.0.0/16}
+	\item Network for link R4 $\leftrightarrow$ R3: \texttt{10.4.0.0/16}
+\end{itemize}
+
+
+Additionally, the serial ports used for routers R1, R3, and R4 were port 1 instead of 3. I discovered the reason for the differing serial numbers after completing the lab and have since amended the file for future labs; however, to avoid repeating commands for most objectives, the original serial port assignments were retained.
+
+This note's purpose is only to serve as clarification for when the CLI commands don't precisely match the instructed ones.
+
+
+\section*{2. Objective 1}
+\textbf{Task Assignment:} \\
+The aim of this task was to create the appropriate topology in Cisco Packet Tracer.
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+The topology was created, using the appropriate switches and routers. The routers were then connected using Serial DTE (Data Terminal Equipment) connection.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj 1.png}
+	\caption{Logical Topology.}
+\end{figure}
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{3. Objective 2}
+\textbf{Task Assignment:} \\
+The aim of this task was to set up addressing on all the devices.
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+To be able to configure addressing on the routers, the user must be in \textbf{Configuration mode}. 
+
+For each router, its LAN interface was assigned a specific IP address and subnet mask to define its network. The interface was then activated using \texttt{no shutdown}.
+
+The configuration of addresses corresponded with the following rules: 
+\begin{itemize}
+	\item R1 and R4 are using the \textbf{first} available host addresses from their particular networks on the serial interfaces.
+	\item R2 and R3 are using the \textbf{last} available host addresses from their particular networks on the serial interfaces
+\end{itemize}
+
+\vspace{2em}
+As a result of the configuration,  the interfaces went up and changed colour from red to green. The correct configuration was verified by issuing the appropriate ping command from local PCs. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj 2.png}
+	\caption{Topology with now activated interfaces.}
+\end{figure}
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{4. Objective 3}
+\textbf{Task Assignment:} \\
+The aim of this task was to explore the contents of the routing tables on the routers.
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+The routing tables of the routers were displayed using the \texttt{show ip route} command in Privileged EXEC mode
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj3_showiproute.png}
+	\caption{Router R1's routing table}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj3_r2showiproute.png}
+	\caption{Router R2's routing table}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj3_r3showiproute.png}
+	\caption{Router R3's routing table}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj3_r4showiproute.png}
+	\caption{Router R4's routing table}
+\end{figure}
+
+In the above tables, the individual records of paths can be seen having either a C code or an L code. 
+\begin{itemize}
+	\item The \textbf{C} code shows that the path is directly connected to the router
+	\item The \textbf{L} code shows the router's own (local) IP address associated with an interface.
+\end{itemize}
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{5. Objective 4}
+\textbf{Task Assignment:} \\
+The aim of this task was to configure static routing so that all the devices can reach each other.
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+To configure static routes, every network that the router should be able to communicate with was specified. Through specifying, the idea of reaching the destination (unknown network) via the shortest path possible is maintained.
+
+Following are the routing tables of each router after the setup of static routing. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj4 r1static.png}
+	\caption{Router R1's routing table after static routing.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj4_r2static.png}
+	\caption{Router R2's routing table after static routing.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj4_r3static.png}
+	\caption{Router R3's routing table after static routing.}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj4_r4static.png}
+	\caption{Router R4's routing table after static routing.}
+\end{figure}
+
+New records are visible in all the tables; all having S code meaning that they are Static records. This means that the static routing configuration was successful. 
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{6. Objective 5}
+\textbf{Task Assignment:} \\
+The aim of this task was to remove the link connecting R1 and R2 to explore its effects on the reachability between LANs. 
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+Via the deletion tool, the connection between R1 and R2 was removed. The effect of this on R1's routing table can be seen:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj5_r1tableafterdelete.png}
+	\caption{Router R1's routing table after severing R1$\leftrightarrow$R2 link.}
+\end{figure}
+
+It can be noted that all networks previously reachable via Serial port 0/1/0 of R1 are no longer reachable. These include the networks \texttt{10.1.0.0/16} and \texttt{10.3.0.0/16}, as well as the local IP address \texttt{10.1.0.1/32}. Additionally, the LAN \texttt{192.168.2.0/24} is no longer reachable.
+
+The reason R2's LAN and network \texttt{10.3.0.0/16} (\textit{in reference topology \texttt{10.4.0.0/16}}) are no longer reachable, even though there still exists a route via R3 and R4 is because no static routes are configured for that path; All the connection records indicate this as they are all labelled as directly connected. For static routing, routers only know manually configured routes, so even if a physical path exists, it cannot be used unless configured otherwise.
+
+The ping utility was then used to test the connectivity from any PC inside R1's LAN to active interfaces on R4. 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj5_lastquestion.png}
+	\caption{Testing connectivity from R1's LAN to active interfaces on R4}
+\end{figure}
+
+It can be seen that the ping for interface R4$\leftrightarrow$R3 was successful because R1 is still directly connected to R3. However, ping for interface R4$\leftrightarrow$R2 failed. This is because even though they are on the same device, there is no configured route for R1 to reach R4; had the R1$\leftrightarrow$R2 connection still be established, the ping would have succeeded as R1 would be directly connected to R2. 
+
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{7. Objective 6}
+\textbf{Task Assignment:} \\
+The aim of this task was to reconnect the previously removed link and replace the previously implemented static routing with dynamic routing using the RIP protocol.
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+R1 and R2 were reconnected. The routing table of R1 then printed as follows:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj6_r1routeafterreadding.png}
+	\caption{R1's routing table after re-establishing R1$\leftrightarrow$R2}
+\end{figure}
+It can be noted that no new records appeared, as the records were not deleted from the memory of the router when the interface was removed. 
+
+All static routes were then deleted from the routers using command template \texttt{Rx(config)\#no ip route <network> <subnet-mask> <serial port>}. Then, dynamic routing using the \textbf{RIPv1} protocol was configured for all the routers. R1's routing table now looks as follows:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.3\textheight, keepaspectratio]{Pictures_Lab2/obj6_r1afterrip.png}
+	\caption{R1's routing table after dynamic routing}
+\end{figure}
+
+In total, this new table presents 3 new records, all indicated with the \textbf{R} code, which means that the entries were dynamically learned via the RIP protocol.
+
+After dynamic routing, R3's routing table now looks as follows:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj6_r3afterrip.png}
+	\caption{R3's routing table after dynamic routing showing active load balancing}
+\end{figure}
+
+One can note that the bottom two rows are two different routes to reach R2's LAN. Since both routes are of equal distance, RIP uses both of these and divides traffic equally in a process called \textbf{load balancing}.
+
+
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+
+
+\section*{8. Objective 7}
+\textbf{Task Assignment:} \\
+The aim of this task was to once again remove the link connecting R1 and R2 to explore its affects on the reachability between LANs now that dynamic routing has been implemented. 
+
+\vspace{0.5em}
+\textbf{Solution:} \\
+
+After deleting the link of R1 and R2 once again, R1's routing table prints as follows:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj7_r1afterdelete.png}
+	\caption{R1's routing table after severing R1$\leftrightarrow$R2 once again.}
+\end{figure}
+
+The networks \texttt{10.3.0.0/16} (\textit{in reference topology \texttt{10.4.0.0/16}}) and \texttt{192.168.2.0/24} are still available as can be noted. This differs from the result that was seen after deleting the R1$\leftrightarrow$R2 link when static routing was configured. 
+
+The route used to reach the networks is [120/2] for \texttt{10.3.0.0/16} and [120/3] for \texttt{192.168.2.0/24}. These routes were both learned dynamically; the 120 indicates the administrative distance, which is used by RIP, while the second number ([120/x]) indicates the hop count, which is the number of routers needed to reach that particular network. 
+
+Below is R3's routing table
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{Pictures_Lab2/obj7_r3afterdelete.png}
+	\caption{R3's routing table after severing R1$\leftrightarrow$R2 once again.}
+\end{figure}
+
+It can be noted that load balancing is no longer active, as only one valid path to the LAN remains, which is via R4. 
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+
+\section*{9. Final Questions}
+\textbf{Question 1: What is the difference between static and dynamic routing?} \\
+Static routing involves manually configured paths for network traffic, which do not change unless manually updated. Dynamic routing, on the other hand uses routing protocols such as RIP, which, after configured, automatically discover and update routes based on the present configuration. 
+
+\textbf{Question 2: What is routing table and what does it contain?}\\
+A routing table is a data structure in the router which stores and displays information about which networks are reachable, and how. It contains:
+\begin{itemize}
+	\item The connection code (eg: C/S/R/D)
+	\item The destination network
+	\item The subnet mask
+	\item Potential values for administrative distance and hop count
+	\item The next-hop IP address
+	\item The age of the route
+	\item The exit interface used to reach the next hop
+\end{itemize}
+
+\textbf{Question 3: What is the next-hop IP address?} \\
+The next-hop IP address is the address of the next router along the path to the destination network. 
+
+\textbf{Question 4: What must be specified while configuring the static routes on Cisco devices?}\\
+When configuring the static routes on Cisco routers, in the command the following parameters must be set:
+\begin{itemize}
+	\item The Destination network and subnet mask. This defines which network the static route is for
+	\item The exit interface OR even the next-hop IP address. This specifies where to send the packets to reach the destination network.
+\end{itemize}
+
+
+\textbf{Question 5: What is a load balancing?} \\
+Load balancing is when there are more than one equidistant routes to a destination network, and a protocol distributes the network traffic between the routes so to use resources more efficiently.
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+	
+	
+\end{document}
