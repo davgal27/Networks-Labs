@@ -1,0 +1,27 @@
+# LaTeX intermediate files
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+
+# Backup files
+*~
+*.bak
+*.swp
+*.tmp
+
+# PDF or other compiled output
+*.dvi
+*.ps
+
+# Directory for latexmk or other build tools
+latexmkrc
+_build/
