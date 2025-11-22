@@ -1,0 +1,335 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[czech,english]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{geometry}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{mdframed}
+\usepackage{amsmath}
+\geometry{margin=2.5cm}
+
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+	
+	\begin{center}
+		{\Large \textbf{BPA-KOM Lab 3 - Dynamic routing protocol groups - Distance Vector and Link State}}\\[1em]
+	\end{center}
+	
+	\vspace{1cm}
+	
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Name} & Dave Galea \\ \hline
+			\textbf{VUT ID} & 284844 \\ \hline
+			\textbf{Lab Number} & 3 \\ \hline
+			\textbf{Date} & November 2025 \\ \hline
+		\end{tabular}
+	\end{center}
+	
+	\vspace{0.5cm}
+	\hrule
+	\vspace{0.5cm}
+	
+	\section*{1. Objective 1}
+	
+	\textbf{Task Assignment:} The aim of this task was to change the addressing scheme from previous Lab.
+	
+	\textbf{Solution:}
+	
+	As in the last Lab, the principle of using the following rules still applied:
+	\begin{itemize}
+		\item R1 and R4 are using the \textbf{first} available host addresses from their particular networks on the serial interfaces.
+		\item R2 and R3 are using the \textbf{last} available host addresses from their particular networks on the serial interfaces
+	\end{itemize}
+	
+	Additionally, for the LANs, the \textbf{last} available host address was used for the default gateway, and for the PCs, the \textbf{first} available host address was used.
+	
+	Although nothing changed visually from the last lab, following is a picture of the current topology so to be clear with the proceeding objectives. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.25\textheight, keepaspectratio]{pictures/obj1.png}
+		\caption{Topology of the current Lab.}
+	\end{figure}
+	
+	
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+	\section*{2. Objective 2}
+	
+	\textbf{Task Assignment:} The aim of this task was to modify the bandwidth of the serial link connecting R1 and R2.
+	
+	\textbf{Solution:}\\[1em]
+	By entering \textbf{privileged EXEC mode} on R1, and issuing the command \texttt{show interface}, one can observe the bandwidth which is currently set as 1544 kbps. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj2_1544.png}
+		\caption{output of \texttt{show interface} on R1.}
+	\end{figure}
+	
+	This bandwidth can be modified by issuing the command \texttt{bandwidth} while in \textbf{interface configuration mode}, followed by the number one wishes to set as the new bandwidth value in kbps. In this lab, the number was 128.
+	
+	Following are the results of \texttt{show interface} on both R1 and R2 routers after changing the bandwidth.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj2_128.png}
+		\caption{Output of \texttt{show interface} on R1.}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj2_128_2.png}
+		\caption{Output of \texttt{show interface} on R2.}
+	\end{figure}
+	
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+	\section*{3. Objective 3}
+	
+	\textbf{Task Assignment:} The aim of this task was to configure RIPv1 and explore changes in the routing tables.
+	
+	\textbf{Solution:} \\ [1em]
+		Configuration of RIPv1 was the same as in the previous lab, however, there was the addition of using the technique of \textbf{passive interfaces} in this lab. This prevents routers from flooding updates to LANs, while still preserving their participation in the routing process between routers.
+	
+	After configuring RIPv1 on the routers, the connectivity between routers and reachability of other networks from LANs was tested.
+	The result was:
+	\begin{itemize}
+		\item Routers could reach each other
+		\item LAN devices could not reach other routers
+	\end{itemize}
+	
+	The routers can reach each other because RIP is running on all the serial links, so they share their connected networks without any issue. The LAN devices, however, can’t reach the other routers because the LAN interfaces are set as passive; prevents those networks from being advertised, so the other routers simply don’t know those LANs exist and can’t route traffic to them.
+	
+	R3's routing table was then explored; it can be seen that no LAN is present, confirming the above. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj3_R3routingtable.png}
+		\caption{R3's routing table.}
+	\end{figure}
+	
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+	\section*{4. Objective 4}
+	
+	\textbf{Task Assignment:} The aim of this task was to replace RIPv1 with version 2 and explore the effects of this.
+	
+	\textbf{Solution:}\\[1em]
+	With the command \texttt{router rip} followed by \texttt{version 2} in \textbf{configuration mode}, issued on all the routers, RIPv1 is successfully replaced with RIPv2. Upon clicking Fast Forward Time in Cisco packet tracer so to shift time by 30 seconds, testing of connectivity of LAN devices with other routers was once again performed.
+	
+	This time, it resulted that the pings were successful. 
+	
+	R3's routing table was once again examined. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj4_R3routingnewrecords.png}
+		\caption{R3's routing table, with highlighting on newly present records.}
+	\end{figure}
+	
+	The table now shows two new records; those of the LANs. They are marked with R since they are learned via the RIP protocol
+	
+	To check the chosen path from the perspective of LAN devices, the \texttt{tracert} command, followed by the IP address of any of the PCs belonging to R2's LAN, was issued from any of the PCs from R1's LAN. Following is the output. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.55\textheight, keepaspectratio]{pictures/obj4_tracert.png}
+		\caption{Output of the \texttt{tracert} command on a PC on R1's LAN.}
+	\end{figure}
+
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+	\section*{5. Objective 5}
+	
+	\textbf{Task Assignment:} The aim of this task was to configure Open Shortest Path First (OSPF) and examine the different approach that the protocol takes when selecting routing paths.
+	
+	\textbf{Solution:}\\[1em]
+	To establish OSPF on the routers, the following syntax was used. 
+	\begin{mdframed}
+		\ttfamily
+		Router(config)\#router ospf <process-id> \\
+		Router(config-router)\#network <network-number> <wildcard-mask>\\
+		area <area-id>
+	\end{mdframed}
+	
+	Upon establishing OSPF, there are now two routing protocols on R1. This can be verified with the command \texttt{show ip protocols} in \textbf{Privileged EXEC mode}. Output is as follows: 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj5_showipprotocols.png}
+		\caption{Output of \texttt{show ip protocols} on R1.}
+	\end{figure}
+	
+	Before configuring OSPF on R2 and other subsequent routers; the OSPF metric to reach the destinations from the perspective of R1 was calculated. 
+	
+	To do the calculation, the following equation was used: 
+	
+	\[
+	\text{cost} = \frac{\text{Reference bandwidth}}{\text{Interface bandwidth}} = \frac{10^8}{\text{Interface bandwidth [bps]}}
+	\]
+	
+	Additionally, some costs of certain interfaces on Cisco devices were provided in the Lab:
+	\begin{center}
+		\begin{tabular}{|c|c|}
+			\hline
+			\textbf{Interface} & \textbf{Cost} \\ \hline
+			\text{Serial (Packet Tracer default)} & 64 \\ \hline
+			\text{Ethernet} & 10 \\ \hline
+			\text{FastEthernet} & 1 \\ \hline
+			\text{GigabitEthernet} & 1 \\ \hline
+		\end{tabular}
+	\end{center}
+
+It should be noted that the bandwidth of R1 $\leftrightarrow$ R2 was modified from the default value of 1544 kbps to 128 kbps, resulting in higher costs as shown below
+	
+
+\textbf{Directly Connected Networks}
+\begin{itemize}
+	\item \textbf{LAN1 (172.20.0.0/24)}: FastEthernet0/0
+	\[
+	\text{Cost} = \frac{\text{Reference Bandwidth}}{\text{Interface Bandwidth}}
+	= \frac{100,000,000}{100,000,000} = 1
+	\]
+	Cumulative Cost from R1: \textbf{1}
+	
+	\item \textbf{R1 $\leftrightarrow$ R2 Link (172.20.2.0/30)}: Serial0/3/0
+	\[
+	\text{Cost} = \frac{\text{Reference Bandwidth}}{\text{Interface Bandwidth}}
+	= \frac{100,000,000}{128,000} \approx 781
+	\]
+	Cumulative Cost from R1: \textbf{781}
+	
+	\item \textbf{R1 $\leftrightarrow$ R3 Link (172.20.2.4/30)}: Serial0/3/1
+	\[
+	\text{Cost} = \frac{\text{Reference Bandwidth}}{\text{Interface Bandwidth}}
+	= \frac{100,000,000}{1,544,000} \approx 64
+	\]
+	Cumulative Cost from R1: \textbf{64}
+\end{itemize}
+
+\textbf{Non-Directly Connected Networks}
+\begin{itemize}
+	\item \textbf{LAN2 (172.20.1.0/24)}: Path R1 $\rightarrow$ R2 $\rightarrow$ FastEthernet0/0
+	\[
+	\text{Cost} = 
+	\underbrace{\frac{100,000,000}{128,000}}_{\text{R1→R2 Serial}} +
+	\underbrace{\frac{100,000,000}{100,000,000}}_{\text{R2→LAN2 FastEthernet}}
+	= 781 + 1
+	\]
+	Cumulative Cost from R1: \textbf{782}
+	
+	\item \textbf{R3 $\leftrightarrow$ R4 Link (172.20.2.8/30)}: Path R1 $\rightarrow$ R3 $\rightarrow$ R4
+	\[
+	\text{Cost} =
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R1→R3 Serial}} +
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R3→R4 Serial}}
+	= 64 + 64
+	\]
+	Cumulative Cost from R1: \textbf{128}
+	
+	\item \textbf{R4 $\leftrightarrow$ R2 Link (172.20.2.12/30)}: \\
+	\textit{Path 1:} R1 $\rightarrow$ R2 $\rightarrow$ R4
+	\[
+	\text{Cost} =
+	\underbrace{\frac{100,000,000}{128,000}}_{\text{R1→R2 Serial}} +
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R2→R4 Serial}}
+	= 781 + 64
+	\]
+	Cumulative Cost from R1 (via R2): \textbf{845}
+	
+	\textit{Path 2:} R1 $\rightarrow$ R3 $\rightarrow$ R4 $\rightarrow$ R2
+	\[
+	\text{Cost} =
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R1→R3 Serial}} +
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R3→R4 Serial}} +
+	\underbrace{\frac{100,000,000}{1,544,000}}_{\text{R4→R2 Serial}}
+	= 64 + 64 + 64
+	\]
+	Cumulative Cost from R1 (via R3): \textbf{192}
+\end{itemize}
+
+
+	Then, OSPF was configured on R2's router as well. R1's routing table was then examined, and the output shows that there are new routes reachable via OSPF; who's metrics correspond correctly to the cost calculations above.
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj5_r1iproute.png}
+		\caption{Output of R1's routing table after configuring OSPF on R2.}
+	\end{figure}
+	
+	It can be seen that the network \texttt{172.20.2.8/30} (R3 $\leftrightarrow$ R4) is still reachable via RIP. this is because neither R3 or R4 are configured to run OSPF yet. 
+	
+	After configuring OSPF on the rest of the routers, the \texttt{tracert} test was once again performed. The output shows that the even though there is a direct link from R1 to R2, the cumulative cost of R1$\rightarrow$R3$\rightarrow$R4$\rightarrow$R2$\rightarrow$LAN2 is lower. This can be also verified from the calculations. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj5_tracert.png}
+		\caption{Output \texttt{tracert} on a PC on LAN1.}
+	\end{figure}
+	
+	Now that all routers are configured for OSPF, no more RIP learnt paths are shown in R1's routing table, as every distance network is reachable via OSPF
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth, height=0.4\textheight, keepaspectratio]{pictures/obj5_r1finaliproute.png}
+		\caption{R1 routing table after configuring all routers with OSPF.}
+	\end{figure}
+	
+	The metrics of all records correspond to the calculated cumulative costs besides that of 193; atleast not directly. \\
+	
+	Since at the time of calculation the other routers were not configured with OSPF, the link from R1 to LAN2 only included the path R1$\rightarrow$R2$\rightarrow$FastEthernet0/0 with cost 782. However, from the calculation for R1 to the R4$\leftrightarrow$R2 Link, with cost 192, one can deduce that the cost would be of that plus the cost for the FastEthernet0/0 port which is 1, hence a cost of 193. 
+
+
+
+
+
+	
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+	\section*{6. Final Questions}
+	
+	\textbf{Question 1: What is used a metric for Distance Vector routing protocols?}\\
+	Distance Vector routing protocols, like RIP, use hop count as the metric
+	
+	\textbf{Question 2: What is used as a metric for Link State routing protocols?}\\ 
+	Link State routing protocols, like OSPF, use cumulative link costs as the metric
+	
+	\textbf{Question 3: What is the difference between RIP version 1 and version 2 in terms of netting?}\\
+	RIPv1 uses classful routing, and does not send a subnet mask to the routing table, unlike RIPv2, which is classless, and sends a subnet mask to the routing table. 
+	
+	\textbf{Question 4: What criteria are considered while choosing the best path to the routing table?}\\
+	
+	\begin{itemize}
+		\item \textbf{Administrative Distance (AD):} A measure of trustworthiness of a route source. When a router learns the same network from multiple routing protocols, it selects the route with the lowest AD. For example, OSPF AD=110, and RIP AD=120, so OSPF is preferred.
+		
+		\item \textbf{Metric:} A value that represents the cost of reaching a destination. Examples include hop count for RIP or cumulative bandwidth-based cost for OSPF. Lower metric values are preferred.
+		
+		\item \textbf{Route Specificity:} When multiple routes to the same destination exist, the router prefers the most specific route (i.e., the route with the longest subnet mask or largest prefix length) because it more precisely matches the destination IP address.
+	\end{itemize}
+	
+	\textbf{Question 5: If the same network is learnt via RIP and OSPF, what path is added to the routing table? Why?}\\
+	OSPF is added to the routing table, as it has a lower administrative distance (110) than RIP(120), and paths with lowest AD are added to the routing table.
+		
+	\vspace{1em}
+	\hrule
+	\vspace{0.5em}
+	
+\end{document}
